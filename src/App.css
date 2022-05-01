@@ -1,38 +1,69 @@
-.App {
-  text-align: center;
+/* CSS for BookList */
+.book {
+    padding: 10px;
+    margin: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.book-list {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    justify-items: center;
+    margin: 0px 10vw;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* CSS for BookDetail */
+.book-image {
+    /* width: 20vw; */
+    height: 80%;
+    display: block;
+    margin: auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.book-information-container {
+    height: 50%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
 }
 
-.App-link {
-  color: #61dafb;
+.book-detail-table {
+    background-color: aquamarine;
+    height: 50%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.book-container {
+    margin: 2vh 10vw;
+    height: 100%;
+}
+
+.book-information-detail {
+    margin: 15% 10%;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 80%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
 }
