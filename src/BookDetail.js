@@ -1,7 +1,12 @@
-import React from 'react'
+import { Button } from 'react-bootstrap';
+import React, {useState, useEffect} from 'react'
 import { useLocation } from 'react-router';
+import axios from 'axios'
 
-const BookDetail = () => {
+const BookDetail = ({setFlag}) => {
+    // useEffect(() => {
+    //     setFlag
+    // }, [])
     const location = useLocation();
     const { bookInformation, books, image } = location.state;
     return (
@@ -11,13 +16,13 @@ const BookDetail = () => {
                     <img className="book-image" src={image} />
                     <BookInformation bookInformation={bookInformation} />
                 </div>
-                <BookDetailTable books={books} />
+                <BookDetailTable books={books} setFlag={setFlag} />
             </div>
         </React.Fragment>
     )
 }
 
-const BookDetailTable = ({ books }) => {
+const BookDetailTable = ({ books, setFlag }) => {
     return (
         <table class="styled-table">
             <thead>
@@ -39,6 +44,7 @@ const BookDetailTable = ({ books }) => {
                             bookStatus={bookStatus}
                             bookshelfNumber={bookshelfNumber}
                             bookshelfPosition={bookshelfPosition}
+                            setFlag={setFlag}
                         />
                     )
                 })}
@@ -47,15 +53,39 @@ const BookDetailTable = ({ books }) => {
     )
 }
 
-const BookItem = ({ bookIndex, bookId, bookInfoId, bookStatus, bookshelfNumber, bookshelfPosition }) => {
+const BookItem = ({ bookIndex, bookId, bookInfoId, bookStatus, bookshelfNumber, bookshelfPosition, setFlag }) => {
+    const [status, setStatus] = useState(bookStatus);
+    useEffect(() => {
+        setFlag(true)
+    }, [status])
     return (
         <tr>
             <th>{bookIndex}</th>
             <th>{bookshelfPosition}</th>
             <th>{bookshelfNumber}</th>
-            <th>{bookStatus}</th>
+            <th>
+                <div className="book-status-th">
+                    {status}
+                    <Button onClick={() => borrowBook(bookId, bookInfoId, setStatus)}>借書</Button>
+                </div>
+            </th>
         </tr>
     )
+}
+
+const borrowBook = ( bookId, bookInfoId, setStatus ) => {
+    console.log("Click", bookId);
+    let userId = "userId";
+    axios.post(`http://localhost:8080/bookerfly/collection/books/${bookId}/borrow?userId=${userId}`).then(response => {
+      update(bookInfoId, setStatus, bookId)
+    }).catch(error => console.error(error));
+}
+
+const update = (bookInfoId, setStatus, bookId) => {
+    axios.get(`http://localhost:8080/bookerfly/collection/select/book-infos/${bookInfoId}`).then(response => {
+        let bookStatus = response.data.find(x => x.bookId === bookId).bookStatus
+        setStatus(bookStatus)
+    }).catch(error => console.error(error));
 }
 
 const BookInformation = ({ bookInformation }) => {

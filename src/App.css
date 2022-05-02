@@ -44,7 +44,7 @@
     margin: 25px 0;
     font-size: 0.9em;
     font-family: sans-serif;
-    min-width: 80%;
+    min-width: 70%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -65,4 +65,14 @@
 
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
+}
+
+.navbar-container {
+    margin: 0rem 1rem !important;
+}
+
+.book-status-th {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
