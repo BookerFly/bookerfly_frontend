@@ -1,12 +1,11 @@
-import { Button } from 'react-bootstrap';
-import React, {useState, useEffect} from 'react'
+import { Button, Modal } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router';
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const BookDetail = ({setFlag}) => {
-    // useEffect(() => {
-    //     setFlag
-    // }, [])
+const BookDetail = ({ setFlag }) => {
     const location = useLocation();
     const { bookInformation, books, image } = location.state;
     return (
@@ -16,13 +15,15 @@ const BookDetail = ({setFlag}) => {
                     <img className="book-image" src={image} />
                     <BookInformation bookInformation={bookInformation} />
                 </div>
-                <BookDetailTable books={books} setFlag={setFlag} />
+                <BookDetailTable books={books} setFlag={setFlag} bookTitle={bookInformation.title} bookInfoId={bookInformation.bookInfoId}/>
             </div>
+
+            <ToastContainer autoClose={2000} />
         </React.Fragment>
     )
 }
 
-const BookDetailTable = ({ books, setFlag }) => {
+const BookDetailTable = ({ books, setFlag, bookTitle, bookInfoId }) => {
     return (
         <table class="styled-table">
             <thead>
@@ -35,10 +36,11 @@ const BookDetailTable = ({ books, setFlag }) => {
             </thead>
             <tbody>
                 {books.map((book, index) => {
-                    const { bookId, bookInfoId, bookStatus, bookshelfNumber, bookshelfPosition } = book
+                    const { bookId, bookStatus, bookshelfNumber, bookshelfPosition } = book
                     return (
                         <BookItem
-                            bookIndex={index}
+                            bookIndex={index + 1}
+                            bookTitle={bookTitle}
                             bookId={bookId}
                             bookInfoId={bookInfoId}
                             bookStatus={bookStatus}
@@ -53,11 +55,16 @@ const BookDetailTable = ({ books, setFlag }) => {
     )
 }
 
-const BookItem = ({ bookIndex, bookId, bookInfoId, bookStatus, bookshelfNumber, bookshelfPosition, setFlag }) => {
+const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, bookshelfNumber, bookshelfPosition, setFlag }) => {
     const [status, setStatus] = useState(bookStatus);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     useEffect(() => {
         setFlag(true)
     }, [status])
+
     return (
         <tr>
             <th>{bookIndex}</th>
@@ -66,19 +73,35 @@ const BookItem = ({ bookIndex, bookId, bookInfoId, bookStatus, bookshelfNumber, 
             <th>
                 <div className="book-status-th">
                     {status}
-                    <Button onClick={() => borrowBook(bookId, bookInfoId, setStatus)}>借書</Button>
+                    <Button onClick={() => handleShow()}>借書</Button>
+                    <Modal show={show} onHide={handleClose} animation={false}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>借書</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>你要借書嗎?</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}> No </Button>
+                            <Button variant="primary" onClick={() => {
+                                borrowBook(bookTitle, bookId, bookInfoId, setStatus)
+                                handleClose()
+                            }}> Yes
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
             </th>
         </tr>
     )
 }
 
-const borrowBook = ( bookId, bookInfoId, setStatus ) => {
-    console.log("Click", bookId);
-    let userId = "userId";
-    axios.post(`http://localhost:8080/bookerfly/collection/books/${bookId}/borrow?userId=${userId}`).then(response => {
-      update(bookInfoId, setStatus, bookId)
-    }).catch(error => console.error(error));
+const borrowBook = (bookTitle, bookId, bookInfoId, setStatus) => {
+    axios.post(`http://localhost:8080/bookerfly/collection/books/${bookId}/borrow?userId=userId&bookTitle=${bookTitle}`).then(response => {
+        update(bookInfoId, setStatus, bookId)
+        toast("Borrow Success !", { hideProgressBar: true });
+    }).catch(error => {
+        toast.error(error.response.data, { hideProgressBar: true });
+        console.error("borrowBook", error)
+    });
 }
 
 const update = (bookInfoId, setStatus, bookId) => {

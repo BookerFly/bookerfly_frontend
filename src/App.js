@@ -8,32 +8,29 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { NavigationContainer } from '@react-navigation/native';
 import axios from 'axios'
 
-const fetchData = (setData) => {
+const fetchBookInfos = (setBookInfos) => {
   axios.get(`http://localhost:8080/bookerfly/collection/book-infos`).then(response => {
-    console.log("data", response.data)
-    setData(response.data)
+    setBookInfos(response.data)
   }).catch(error => console.error(error));
 }
 
 const fetchBooks = (setBooks) => {
   axios.get(`http://localhost:8080/bookerfly/collection/books`).then(response => {
-    console.log("fetchBooks", response.data)
     setBooks(response.data)
   }).catch(error => console.error(error));
 }
 
-
 const App = () => {
   const [flag, setFlag] = useState(false);
-  const [data, setData] = useState([]);
+  const [bookInfos, setBookInfos] = useState([]);
   const [books, setBooks] = useState([]);
   useEffect(() => {
-    fetchData(setData)
-    fetchBooks(setBooks)
+    fetchBookInfos(setBookInfos)
+    // fetchBooks(setBooks)
   }, [])
   useEffect(() => {
-    fetchData(setData)
-    console.log("trigger fetchData.", flag)
+    fetchBookInfos(setBookInfos)
+    console.log("trigger fetchBookInfos.", flag)
   }, [flag])
   let setFlagFunction = (f) => setFlag(f)
 
@@ -42,9 +39,9 @@ const App = () => {
       <AppNavbar />
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<BookList data={data} />} />
+          <Route exact path="/" element={<BookList bookInfos={bookInfos} />} />
           <Route path="/bookDetail" element={<BookDetail setFlag={setFlagFunction}/>} />
-          <Route path="/checkOutRecord" element={<CheckOutRecord bookInfos={data} books={books}/>} />
+          <Route path="/checkOutRecord" element={<CheckOutRecord/>} />
         </Routes>
       </BrowserRouter>
     </NavigationContainer>

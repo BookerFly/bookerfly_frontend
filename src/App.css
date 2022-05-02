@@ -1,4 +1,9 @@
 /* CSS for BookList */
+.title {
+    text-align: center;
+    padding: 2%;
+}
+
 .book {
     padding: 10px;
     margin: 10px;

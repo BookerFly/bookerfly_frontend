@@ -9,7 +9,7 @@ const AppNavbar = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 {/* <Navbar.Collapse id="basic-navbar-nav"> */}
                 <Nav className="me-auto">
-                    <Nav.Link href="/checkOutRecord">checkOutRecord</Nav.Link>
+                    <Nav.Link href="/checkOutRecord">借閱紀錄</Nav.Link>
                 </Nav>
                 {/* </Navbar.Collapse> */}
             </Container>

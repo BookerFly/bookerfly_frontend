@@ -8,10 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const selectBook = (bookInformation, navigate) => {
   console.log("click", bookInformation)
   axios.get(`http://localhost:8080/bookerfly/collection/select/book-infos/${bookInformation.bookInfoId}`).then(response => {
-    console.log(response.data)
-    navigate('/bookDetail', 
-    { state: { bookInformation, books: response.data, image: angryCat } }
-    );
+    navigate('/bookDetail', { state: { bookInformation, books: response.data, image: angryCat } });
   }).catch(error => console.error(error));
 }
 
@@ -27,18 +24,12 @@ const BookInformation = ({ bookInformation }) => {
   )
 }
 
-const BookList = ({data}) => {
-  // const [flag, setFlag] = useState(false);
-  // useEffect(() => {
-  //   console.log("trigger fetch.");
-  //   fetchData(setData)
-  // }, [flag])
+const BookList = ({bookInfos}) => {
   return (
     <React.Fragment>
+      <h1 className="title">所有藏書</h1>
       <div className="book-list">
-        {
-          data.map(item => <BookInformation bookInformation={item}/>)
-        }
+        { bookInfos.map(item => <BookInformation bookInformation={item}/>) }
       </div>
     </React.Fragment>
   )
