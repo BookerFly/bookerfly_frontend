@@ -2,42 +2,50 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import {BiBookReader} from 'react-icons/bi'
 
-const fetchCheckOutRecord = (setCheckOutRecords) => {
-    let userId = "userId"
-    axios.get(`http://localhost:8080/bookerfly/record/check-out-record?userId=${userId}`).then(response => {
-        console.log("Get checkoutrecord = ", response.data)
-        // setCheckOutRecords(response.data)
-    }).catch(error => console.error(error));
-    // setCheckOutRecords([
-    //     {
-    //         "title": "OOAD",
-    //         "checkOutTime": "2022/04/30",
-    //         "returnDate": "2022/05/02"
-    //     },
-    //     {
-    //         "title": "SA",
-    //         "checkOutTime": "2022/01/01",
-    //         "returnDate": "2022/02/01"
-    //     },
-    //     {
-    //         "title": "DDD",
-    //         "checkOutTime": "2022/01/01",
-    //         "returnDate": "Still renting"
-    //     }
-    // ])
+const findBooksWithInfoByBookId = (targetBookIds, bookInfos, books) => {
+    let result = []
+    let targetBooks = books.filter(x => targetBookIds.includes(x.bookId))
+    targetBooks.forEach(book => {
+        let bookInformation = bookInfos.find(info => info.bookInfoId === book.bookInfoId)
+        result.push({ ...book, bookInformation })
+    })
+    return result
 }
 
-const CheckOutRecord = () => {
+const findBookWithInfoByBookId = (targetBookId, bookInfos, books) => {
+    let targetBook = books.find(x => targetBookId === x.bookId)
+    let bookInformation = bookInfos.find(info => info.bookInfoId === targetBook.bookInfoId)
+    return {...targetBook, ...bookInformation}
+}
+
+
+const fetchCheckOutRecord = (bookInfos, books, setCheckOutRecords) => {
+    let userId = "userId"
+    axios.get(`http://localhost:8080/bookerfly/record/check-out-record?userId=${userId}`).then(response => {
+        let result = []    
+        response.data.forEach(record => {
+            let book = findBookWithInfoByBookId(record.bookId, bookInfos, books) 
+            result.push({
+                "title": book.title,
+                "checkOutTime": new Date(record.timestamp).toDateString(),
+                "returnDate": record.bookStatus == "CHECKED_OUT" ? "Still checking out." : "Return"
+            })
+        })
+        setCheckOutRecords(result)
+    }).catch(error => console.error(error));
+}
+
+const CheckOutRecord = ({bookInfos, books}) => {
     const [checkOutRecords, setCheckOutRecords] = useState([])
     useEffect(() => {
-        fetchCheckOutRecord(setCheckOutRecords)
+        fetchCheckOutRecord(bookInfos, books, setCheckOutRecords)
     }, [])
-    console.log("checkOutRecords", checkOutRecords)
+
     return (
         <React.Fragment>
             <div className="record-container">
                 <div className="record-title">
-                    <BiBookReader size={50}/>
+                    <BiBookReader size={100}/>
                     <h2>CheckOutRecord</h2>
                 </div>
                 <CheckOutRecordTable checkOutRecords={checkOutRecords} />
