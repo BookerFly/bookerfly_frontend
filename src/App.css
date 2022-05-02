@@ -30,6 +30,7 @@
     height: 50%;
 }
 
+.record-container,
 .book-container {
     margin: 2vh 10vw;
     height: 100%;
@@ -37,6 +38,13 @@
 
 .book-information-detail {
     margin: 15% 10%;
+}
+
+.record-title {
+    height: 20%;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    align-items: center;
 }
 
 .styled-table {
