@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import AppNavbar from './AppNavbar';
-import { Button, Card } from 'react-bootstrap';
+import React from 'react'
 import { useLocation } from 'react-router';
 
 const BookDetail = () => {
@@ -8,7 +6,6 @@ const BookDetail = () => {
     const { bookInformation, books, image } = location.state;
     return (
         <React.Fragment>
-            <AppNavbar />
             <div className="book-container">
                 <div className="book-information-container">
                     <img className="book-image" src={image} />
@@ -72,25 +69,5 @@ const BookInformation = ({ bookInformation }) => {
         </div>
     )
 }
-
-// const BookDetail = ({ route, navigation }) => {
-//     const { bookInformation, books, image} = route.params;
-//     return (
-//         <React.Fragment>
-//             <AppNavbar/>
-//             <div className="book-container"> 
-//                <div className="book-information">                    
-//                     <Card className="book-image" >
-//                         <Card.Img variant="top" src={image} />
-//                     </Card>                    
-//                     <div>HEllo {bookInformation.title}</div>
-//                 </div>
-//                 <div className="book-detail-table">
-//                     <div>books {books[0].bookStatus}</div>
-//                 </div> 
-//             </div>
-//         </React.Fragment>
-//     )
-// }
 
 export default BookDetail;
