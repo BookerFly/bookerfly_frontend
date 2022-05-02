@@ -3,27 +3,28 @@ import axios from 'axios'
 import {BiBookReader} from 'react-icons/bi'
 
 const fetchCheckOutRecord = (setCheckOutRecords) => {
-    // axios.get(`http://localhost:8080/bookerfly/`).then(response => {
-    //     console.log(response.data)
-    //     setCheckOutRecords(response.data)
-    // }).catch(error => console.error(error));
-    setCheckOutRecords([
-        {
-            "title": "OOAD",
-            "checkOutTime": "2022/04/30",
-            "returnDate": "2022/05/02"
-        },
-        {
-            "title": "SA",
-            "checkOutTime": "2022/01/01",
-            "returnDate": "2022/02/01"
-        },
-        {
-            "title": "DDD",
-            "checkOutTime": "2022/01/01",
-            "returnDate": "Still renting"
-        }
-    ])
+    let userId = "userId"
+    axios.get(`http://localhost:8080/bookerfly/record/check-out-record?userId=${userId}`).then(response => {
+        console.log("Get checkoutrecord = ", response.data)
+        // setCheckOutRecords(response.data)
+    }).catch(error => console.error(error));
+    // setCheckOutRecords([
+    //     {
+    //         "title": "OOAD",
+    //         "checkOutTime": "2022/04/30",
+    //         "returnDate": "2022/05/02"
+    //     },
+    //     {
+    //         "title": "SA",
+    //         "checkOutTime": "2022/01/01",
+    //         "returnDate": "2022/02/01"
+    //     },
+    //     {
+    //         "title": "DDD",
+    //         "checkOutTime": "2022/01/01",
+    //         "returnDate": "Still renting"
+    //     }
+    // ])
 }
 
 const CheckOutRecord = () => {
