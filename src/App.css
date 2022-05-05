@@ -62,8 +62,8 @@
 }
 
 .styled-table thead tr {
-    background-color: #009879;
-    color: #ffffff;
+    background-color: #F2DDDE;
+    color: #050505;
     text-align: left;
 }
 
@@ -77,7 +77,12 @@
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+    border-bottom: 2px solid #F2DDDE;
+}
+
+.navbar-parent {
+    background-color: #89ABE3 !important;
+    font-weight: bold;
 }
 
 .navbar-container {
@@ -88,4 +93,26 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.search-bar {
+    display: flex;
+    width: 41%;
+    justify-content: space-between;
+    margin: 40px 0px 0px 50px;
+}
+
+.search-option {
+    width: 35%;
+}
+
+.keyword {
+    display: flex;
+    width: 50%;
+}
+
+.search-button {
+    height: fit-content;
+    background-color: #89ABE3 !important;
+    border: none !important;
 }
