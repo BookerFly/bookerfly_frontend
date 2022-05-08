@@ -1,0 +1,39 @@
+.search-bar {
+    display: flex;
+    width: 41%;
+    justify-content: space-between;
+    margin: 40px 0px 0px 50px;
+}
+
+.search-option {
+    width: 35%;
+}
+
+.keyword {
+    display: flex;
+    width: 50%;
+}
+
+.search-button {
+    height: fit-content;
+    background-color: #89ABE3 !important;
+    border: none !important;
+}
+
+.simple-book-card {
+    padding: 10px;
+    margin: 10px;
+}
+
+.all-book-title {
+    text-align: center;
+    padding: 2%;
+}
+
+.all-book-list {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    justify-items: center;
+    margin: 0px 10vw;
+}
