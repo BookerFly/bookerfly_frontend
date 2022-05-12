@@ -2,10 +2,29 @@ import { Button, Modal } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './BookDetail.css'
+import { borrowBookApi, selectBookApi } from '../../api/bookerflyApi';
+
+const borrowBook = (bookTitle, bookId, bookInfoId, setStatus) => {
+	borrowBookApi(bookTitle, bookId, response => {
+		update(bookInfoId, setStatus, bookId)
+		toast("Borrow Success !", { hideProgressBar: true });
+	}, error => {
+		toast.error(error.response.data, { hideProgressBar: true });
+		console.error("borrowBook", error);
+	})
+}
+
+const update = (bookInfoId, setStatus, bookId) => {
+	selectBookApi(bookInfoId, response => {
+		let bookStatus = response.data.find(x => x.bookId === bookId).bookStatus
+		setStatus(bookStatus)
+	}, error => {
+		console.error(error);
+	})
+}
 
 const BookDetailTable = ({ books, setFlag, bookTitle, bookInfoId }) => {
 	return (
@@ -76,23 +95,6 @@ const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, booksh
 			</th>
 		</tr>
 	)
-}
-
-const borrowBook = (bookTitle, bookId, bookInfoId, setStatus) => {
-	axios.post(`http://localhost:8080/bookerfly/collection/books/${bookId}/borrow?userId=userId&bookTitle=${bookTitle}`).then(response => {
-		update(bookInfoId, setStatus, bookId)
-		toast("Borrow Success !", { hideProgressBar: true });
-	}).catch(error => {
-		toast.error(error.response.data, { hideProgressBar: true });
-		console.error("borrowBook", error)
-	});
-}
-
-const update = (bookInfoId, setStatus, bookId) => {
-	axios.get(`http://localhost:8080/bookerfly/collection/select/book-infos/${bookInfoId}`).then(response => {
-		let bookStatus = response.data.find(x => x.bookId === bookId).bookStatus
-		setStatus(bookStatus)
-	}).catch(error => console.error(error));
 }
 
 const BookInformation = ({ bookInformation }) => {

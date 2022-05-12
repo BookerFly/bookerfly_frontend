@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 import { BiBookReader } from 'react-icons/bi'
-import { getCheckoutRecordByUserIdApi } from '../../api/bookerflyApi';
+import { getCheckoutRecordByUserIdApi, returnBookApi } from '../../api/bookerflyApi';
+import { ToastContainer, toast } from 'react-toastify';
+import './CheckOutRecord.css'
 
 const fetchCheckOutRecord = (setCheckOutRecords) => {
 	getCheckoutRecordByUserIdApi("userId", response => {
@@ -9,34 +12,43 @@ const fetchCheckOutRecord = (setCheckOutRecords) => {
 		response.data.forEach(record => {
 			result.push({
 				"title": record.bookTitle,
-				"checkOutTime": new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(record.timestamp * 1000),
-				"returnDate": record.bookStatus === "CHECKED_OUT" ? "Still checking out." : "Return"
+				"bookId": record.bookId,
+				"userId": record.userId,
+				"checkOutTime": new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(record.borrowTimestamp * 1000),
+				"bookStatus": translateBookStatus(record.bookStatus, record.returnTimestamp)
 			})
 		})
 		setCheckOutRecords(result)
 	}, error => console.error(error))
 }
 
-const CheckOutRecord = () => {
-	const [checkOutRecords, setCheckOutRecords] = useState([])
-	useEffect(() => {
-		fetchCheckOutRecord(setCheckOutRecords)
-	}, [])
-
-	return (
-		<React.Fragment>
-			<div className="record-container">
-				<div className="record-title">
-					<BiBookReader size={100} />
-					<h2>借閱紀錄</h2>
-				</div>
-				<CheckOutRecordTable checkOutRecords={checkOutRecords} />
-			</div>
-		</React.Fragment>
-	)
+const returnBook = (bookId, userId, index, checkOutRecords, setCheckOutRecords) => {
+	returnBookApi(bookId, userId, response => {
+		let checkOutRecord = {...checkOutRecords[index], bookStatus: "處理中"};
+		checkOutRecords[index] = checkOutRecord;
+		setCheckOutRecords(checkOutRecords);
+		toast(response.data, { hideProgressBar: true });
+	}, error => {
+		toast.error(error.response.data, { hideProgressBar: true });
+	})
 }
 
-const CheckOutRecordTable = ({ checkOutRecords }) => {
+const translateBookStatus = (bookStatus, returnTimestamp) => {
+	switch(bookStatus) {
+		case "AVAILABLE": 
+			return "已歸還" + " (" + new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(returnTimestamp * 1000) + ")";
+		case "CHECKED_OUT":
+			return "借閱中";
+		case "PROCESSING":
+			return "處理中";
+		case "MISSING":
+			return "掛失";
+		default:
+			return "";
+	}
+}
+
+const CheckOutRecordTable = ({ checkOutRecords, setCheckOutRecords }) => {
 	return (
 		<table class="styled-table">
 			<thead>
@@ -49,13 +61,17 @@ const CheckOutRecordTable = ({ checkOutRecords }) => {
 			</thead>
 			<tbody>
 				{checkOutRecords.map((checkOutRecord, index) => {
-					const { title, checkOutTime, returnDate } = checkOutRecord
+					const { title, bookId, userId, checkOutTime, bookStatus } = checkOutRecord
 					return (
 						<CheckOutRecordItem
 							index={index + 1}
 							title={title}
+							bookId={bookId}
+							userId={userId}
 							checkOutTime={checkOutTime}
-							returnDate={returnDate}
+							bookStatus={bookStatus}
+							checkOutRecords={checkOutRecords}
+							setCheckOutRecords={setCheckOutRecords}
 						/>
 					)
 				})}
@@ -64,14 +80,39 @@ const CheckOutRecordTable = ({ checkOutRecords }) => {
 	)
 }
 
-const CheckOutRecordItem = ({ index, title, checkOutTime, returnDate }) => {
+const CheckOutRecordItem = ({ index, title, bookId, userId, checkOutTime, bookStatus, checkOutRecords, setCheckOutRecords }) => {
 	return (
 		<tr>
 			<th>{index}</th>
 			<th>{title}</th>
 			<th>{checkOutTime}</th>
-			<th>{returnDate}</th>
+			<th className="book-status-th">{bookStatus}
+				{
+					bookStatus === "借閱中" && 
+					<Button className="return-book-btn" onClick={() => returnBook(bookId, userId, index - 1, checkOutRecords, setCheckOutRecords)}>還書</Button>
+				}
+			</th>
 		</tr>
+	)
+}
+
+const CheckOutRecord = () => {
+	const [checkOutRecords, setCheckOutRecords] = useState([])
+	useEffect(() => {
+		fetchCheckOutRecord(setCheckOutRecords)
+	}, [checkOutRecords])
+
+	return (
+		<React.Fragment>
+			<div className="record-container">
+				<div className="record-title">
+					<BiBookReader size={100} />
+					<h2>借閱紀錄</h2>
+				</div>
+				<CheckOutRecordTable checkOutRecords={checkOutRecords} setCheckOutRecords={setCheckOutRecords} />
+			</div>
+			<ToastContainer autoClose={2000} />
+		</React.Fragment>
 	)
 }
 

@@ -1,0 +1,10 @@
+.book-status-th {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.return-book-btn {
+    background-color: #89abe3 !important;
+    border: none !important;
+}
