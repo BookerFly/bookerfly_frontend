@@ -22,6 +22,16 @@ export const getCheckoutRecordByUserIdApi = (userId, callback, error_callback) =
     get(requestPath, callback, error_callback);
 }
 
+export const getProcessingCheckoutRecordApi = (callback, error_callback) => {
+    let requestPath = bookerflyHost + "record/check-out-record/processing";
+    get(requestPath, callback, error_callback);
+}
+
+export const editBookStatusApi = (bookId, userId, bookStatus, callback, error_callback) => {
+    let requestPath = bookerflyHost + "collection/books/" + bookId + "/edit/book-status";
+    put(requestPath, {"userId":userId, "bookStatus":bookStatus}, callback, error_callback);
+}
+
 export const returnBookApi = (bookId, userId, callback, error_callback) => {
     let requestPath = bookerflyHost + "collection/books/" + bookId + "/return?userId=" + userId;
     put(requestPath, {}, callback, error_callback);

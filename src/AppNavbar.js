@@ -11,6 +11,9 @@ const AppNavbar = () => {
                 <Nav className="me-auto">
                     <Nav.Link href="/checkOutRecord">借閱紀錄</Nav.Link>
                 </Nav>
+                <Nav className="me-auto">
+                    <Nav.Link href="/bookManagement">管理書籍</Nav.Link>
+                </Nav>
                 {/* </Navbar.Collapse> */}
             </Container>
         </Navbar>

@@ -1,0 +1,35 @@
+.management-container {
+    margin: 6vh 10vw;
+    height: 100%;
+}
+
+.management-title {
+    height: 20%;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    align-items: center;
+}
+
+.management-tool {
+    height: 20%;
+    display: flex;
+    grid-template-columns: 1fr 4fr;
+    align-items: center;
+}
+
+.container-item {
+    margin-bottom: 6vh;
+}
+
+.tool-item {
+    display: flex;
+    align-items: center;
+}
+
+.icon-item {
+    margin-right: 2vh;
+}
+
+.text-item {
+    margin-right: 6vh;
+}
