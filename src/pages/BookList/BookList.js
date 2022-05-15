@@ -1,6 +1,4 @@
 import React from 'react'
-import { Button } from 'react-bootstrap';
-import angryCat from '../../img/angry_cat.png'
 import '../../App.css';
 import Form from 'react-bootstrap/Form'
 import { FaSearch } from 'react-icons/fa';
@@ -11,6 +9,7 @@ import AllBookList from './AllBookList.js'
 import SearchResultList from './SearchResultList.js'
 import './BookList.css'
 import { searchBookApi } from '../../api/bookerflyApi';
+import BookerFlyButton from '../../common/BookerFlyButton';
 
 const searchBook = (setBookInfos, searchCondition, setSearchCondition) => {
   if (searchCondition.keyword === "") {
@@ -45,7 +44,7 @@ const BookList = ({ bookInfos, setBookInfos, searchCondition, setSearchCondition
             />
           </InputGroup>
         </div>
-        <Button className="search-button" onClick={() => searchBook(setBookInfos, searchCondition, setSearchCondition)}>搜尋</Button>
+        <BookerFlyButton content="搜尋" backgroundColor="#89ABE3" color="white" onClick={() => searchBook(setBookInfos, searchCondition, setSearchCondition)}/>
       </div>
       {searchCondition.isSearched ? <SearchResultList bookInfos={bookInfos} /> : <AllBookList bookInfos={bookInfos} />}
       <ToastContainer autoClose={2000} />

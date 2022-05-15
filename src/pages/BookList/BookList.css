@@ -14,15 +14,15 @@
     width: 50%;
 }
 
-.search-button {
-    height: fit-content;
-    background-color: #89ABE3 !important;
-    border: none !important;
-}
-
 .simple-book-card {
     padding: 10px;
     margin: 10px;
+}
+
+.simple-book-card:hover {
+    transform: translateY(-5px);
+    transition: 0.3s;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .all-book-title {

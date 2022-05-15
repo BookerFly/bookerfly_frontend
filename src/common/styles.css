@@ -1,0 +1,41 @@
+/* https://getcssscan.com/css-buttons-examples .button-39 style */
+
+/* CSS */
+.bookerfly-btn {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(209,213,219);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #111827;
+  font-size: .875rem;
+  line-height: 1.25rem;
+  padding: .5rem 1rem;
+  text-align: center;
+  text-decoration: none #D1D5DB solid;
+  text-decoration-thickness: auto;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  height: fit-content;
+}
+
+.bookerfly-btn:hover {
+  background-color: rgb(249,250,251);
+  box-shadow: rgba(94, 91, 91, 0.096) 0 1px 3px;
+}
+
+.bookerfly-btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.bookerfly-btn:focus-visible {
+  box-shadow: none;
+}
+
+.bookerfly-btn:active {
+    box-shadow: none;
+    transform: translateY(1px);
+}

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
 import { BiBookReader } from 'react-icons/bi'
 import { getCheckoutRecordByUserIdApi, returnBookApi } from '../../api/bookerflyApi';
 import { ToastContainer, toast } from 'react-toastify';
 import './CheckOutRecord.css'
+import BookerFlyButton from '../../common/BookerFlyButton';
 
 const fetchCheckOutRecord = (setCheckOutRecords) => {
 	getCheckoutRecordByUserIdApi("userId", response => {
@@ -89,7 +89,7 @@ const CheckOutRecordItem = ({ index, title, bookId, userId, checkOutTime, bookSt
 			<th className="book-status-th">{bookStatus}
 				{
 					bookStatus === "借閱中" && 
-					<Button className="return-book-btn" onClick={() => returnBook(bookId, userId, index - 1, checkOutRecords, setCheckOutRecords)}>還書</Button>
+					<BookerFlyButton content="還書" backgroundColor="#89abe3" color="white" onClick={() => returnBook(bookId, userId, index - 1, checkOutRecords, setCheckOutRecords)}/>
 				}
 			</th>
 		</tr>

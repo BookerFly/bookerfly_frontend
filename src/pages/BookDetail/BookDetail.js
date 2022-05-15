@@ -1,4 +1,4 @@
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './BookDetail.css'
 import { borrowBookApi, selectBookApi } from '../../api/bookerflyApi';
+import BookerFlyButton from '../../common/BookerFlyButton';
+import { IoArrowBackCircleOutline } from 'react-icons/io5'
 
 const borrowBook = (bookTitle, bookId, bookInfoId, setStatus) => {
 	borrowBookApi(bookTitle, bookId, response => {
@@ -76,19 +78,19 @@ const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, booksh
 			<th>
 				<div className="book-status-th">
 					{status}
-					<Button onClick={() => handleShow()}>借書</Button>
+					<BookerFlyButton content="借書" onClick={() => handleShow()} backgroundColor="#89ABE3" color="white"/>
 					<Modal show={show} onHide={handleClose} animation={false}>
 						<Modal.Header closeButton>
 							<Modal.Title>借書</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>你要借書嗎?</Modal.Body>
 						<Modal.Footer>
-							<Button variant="secondary" onClick={handleClose}> No </Button>
-							<Button variant="primary" onClick={() => {
+							<BookerFlyButton content="No" backgroundColor="#a8b0ae" onClick={handleClose} color="white"/>
+							<BookerFlyButton content="Yes" backgroundColor="#89ABE3" color="white"
+							onClick={() => {
 								borrowBook(bookTitle, bookId, bookInfoId, setStatus)
 								handleClose()
-							}}> Yes
-							</Button>
+							}}/> 
 						</Modal.Footer>
 					</Modal>
 				</div>
@@ -115,7 +117,7 @@ const BookDetail = ({ setFlag }) => {
 	const { bookInformation, books, image } = location.state;
 	return (
 		<React.Fragment>
-			<Button className="previous-page-btn" onClick={() => navigate(-1)}> 回搜尋結果 </Button>
+			<IoArrowBackCircleOutline className="previous-page-btn" size="60" onClick={() => navigate(-1)}/>
 			<div className="book-container">
 				<div className="book-information-container">
 					<img className="book-image" src={image} />

@@ -5,3 +5,11 @@
 .previous-page-btn {
     margin: 1%;
 }
+
+.previous-page-btn:hover {
+    transform: translateY(-2px);
+}
+
+.previous-page-btn:active {
+    transform: translateY(0);
+}
