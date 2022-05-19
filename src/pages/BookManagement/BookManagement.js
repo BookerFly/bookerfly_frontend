@@ -5,7 +5,7 @@ import './BookManagement.css'
 import { useNavigate } from 'react-router-dom';
 
 const goToCheckOutRecordPage = (navigate) => {
-    navigate('/processingCheckOutRecord');
+    navigate('/trackingCheckOutRecord');
 }
 
 const BookManagement = () => {

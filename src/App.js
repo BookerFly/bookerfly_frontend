@@ -5,7 +5,7 @@ import BookDetail from './pages/BookDetail/BookDetail';
 import AppNavbar from './AppNavbar';
 import CheckOutRecord from './pages/CheckOutRecord/CheckOutRecord';
 import BookManagement from './pages/BookManagement/BookManagement';
-import ProcessingCheckOutRecord from './pages/CheckOutRecord/ProcessingCheckOutRecord';
+import TrackingCheckOutRecord from './pages/CheckOutRecord/TrackingCheckOutRecord';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { NavigationContainer } from '@react-navigation/native';
 import {getAllBookInformationApi} from './api/bookerflyApi.js'
@@ -36,7 +36,7 @@ const App = () => {
           <Route path="/bookDetail" element={<BookDetail setFlag={setFlagFunction}/>} />
           <Route path="/checkOutRecord" element={<CheckOutRecord/>} />
           <Route path="/bookManagement" element={<BookManagement/>} />
-          <Route path="/processingCheckOutRecord" element={<ProcessingCheckOutRecord/>} />
+          <Route path="/trackingCheckOutRecord" element={<TrackingCheckOutRecord/>} />
         </Routes>
       </BrowserRouter>
     </NavigationContainer>

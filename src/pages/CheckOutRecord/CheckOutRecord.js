@@ -26,7 +26,8 @@ const returnBook = (bookId, userId, index, checkOutRecords, setCheckOutRecords) 
 	returnBookApi(bookId, userId, response => {
 		let checkOutRecord = {...checkOutRecords[index], bookStatus: "處理中"};
 		checkOutRecords[index] = checkOutRecord;
-		setCheckOutRecords(checkOutRecords);
+		fetchCheckOutRecord(setCheckOutRecords)
+		// setCheckOutRecords(checkOutRecords);
 		toast(response.data, { hideProgressBar: true });
 	}, error => {
 		toast.error(error.response.data, { hideProgressBar: true });
@@ -100,7 +101,7 @@ const CheckOutRecord = () => {
 	const [checkOutRecords, setCheckOutRecords] = useState([])
 	useEffect(() => {
 		fetchCheckOutRecord(setCheckOutRecords)
-	}, [checkOutRecords])
+	}, [])
 
 	return (
 		<React.Fragment>

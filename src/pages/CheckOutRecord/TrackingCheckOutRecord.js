@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { BiBookReader } from 'react-icons/bi'
-import { getProcessingCheckoutRecordApi, editBookStatusApi } from '../../api/bookerflyApi';
-import { ToastContainer, toast } from 'react-toastify';
+import { getTrackingCheckoutRecordApi, editBookStatusApi, confirmReturnBookApi } from '../../api/bookerflyApi';
+import { ToastContainer } from 'react-toastify';
 import './CheckOutRecord.css'
 import Form from 'react-bootstrap/Form'
 
 const fetchCheckOutRecord = (setCheckOutRecords) => {
-	getProcessingCheckoutRecordApi(response => {
+	getTrackingCheckoutRecordApi(response => {
 		let result = []
-		console.log("response.data", response.data)
+		console.log(response.data)
 		response.data.forEach(record => {
 			result.push({
 				"title": record.bookTitle,
@@ -18,7 +18,7 @@ const fetchCheckOutRecord = (setCheckOutRecords) => {
 				"bookStatus": record.bookStatus
 			})
 		})
-		setCheckOutRecords(result)
+		setCheckOutRecords(result);
 	}, error => console.error(error))
 }
 
@@ -53,6 +53,18 @@ const CheckOutRecordTable = ({ checkOutRecords, setCheckOutRecords }) => {
 	)
 }
 
+const handleEditBook = (bookId, userId, value, setCheckOutRecords) => {
+	if(value === "AVAILABLE") {
+		confirmReturnBookApi(bookId, userId, () => {
+			fetchCheckOutRecord(setCheckOutRecords);
+		});
+		return;
+	} 
+	editBookStatusApi(bookId, userId, value, () => {
+		fetchCheckOutRecord(setCheckOutRecords);
+	})
+}
+
 const CheckOutRecordItem = ({ index, title, bookId, userId, bookStatus, checkOutRecords, setCheckOutRecords }) => {
 	return (
 		<tr>
@@ -60,11 +72,9 @@ const CheckOutRecordItem = ({ index, title, bookId, userId, bookStatus, checkOut
 			<th>{title}</th>
             <th>{userId}</th>
 			<th className="book-status-th">
-                <Form.Select defaultValue={bookStatus} onChange={(e) => editBookStatusApi(bookId, userId, e.target.value)}> 
-                    <option value="CHECKED_OUT">借閱中</option>
+                <Form.Select value={bookStatus} onChange={(e) => handleEditBook(bookId, userId, e.target.value, setCheckOutRecords) }> 
                     <option value="AVAILABLE">已歸還</option>
                     <option value="PROCESSING">處理中</option>
-                    <option value="RESERVED">預約中</option>
                     <option value="MISSING">掛失</option>
                 </Form.Select>
 			</th>
@@ -72,11 +82,12 @@ const CheckOutRecordItem = ({ index, title, bookId, userId, bookStatus, checkOut
 	)
 }
 
-const ProcessingCheckOutRecord = () => {
-	const [checkOutRecords, setCheckOutRecords] = useState([])
+const TrackingCheckOutRecord = () => {
+	const [checkOutRecords, setCheckOutRecords] = useState([]);
+
 	useEffect(() => {
-		fetchCheckOutRecord(setCheckOutRecords)
-	}, [checkOutRecords])
+		fetchCheckOutRecord(setCheckOutRecords);
+	}, [])
 
 	return (
 		<React.Fragment>
@@ -92,4 +103,4 @@ const ProcessingCheckOutRecord = () => {
 	)
 }
 
-export default ProcessingCheckOutRecord;
+export default TrackingCheckOutRecord;
