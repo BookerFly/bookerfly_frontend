@@ -3,9 +3,14 @@ import { GrUserSettings } from 'react-icons/gr'
 import { BiBookReader, BiBookAdd } from 'react-icons/bi'
 import './BookManagement.css'
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 const goToCheckOutRecordPage = (navigate) => {
     navigate('/trackingCheckOutRecord');
+}
+
+const goToBookAdderPage = (navigate) => {
+    navigate('/bookAdder');
 }
 
 const BookManagement = () => {
@@ -25,14 +30,14 @@ const BookManagement = () => {
                         <BiBookReader size={80} className="icon-item"/>
                         <h3 className="text-item">Check Out Record</h3>
                     </div>
-                    <div className="tool-item">
+                    <div className="tool-item" onClick={() => goToBookAdderPage(navigate)}>
                         <BiBookAdd size={80} className="icon-item"/>
                         <h3 className="text-item">Add Book</h3>
                     </div>
 				</div>
 			</div>
+            <ToastContainer autoClose={2000} />
         </React.Fragment>
-        
 	)
 }
 

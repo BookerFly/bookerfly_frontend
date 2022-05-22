@@ -16,12 +16,14 @@
 }
 
 .record-container,
-.book-container {
+.book-container,
+.book-add-container {
     margin: 2vh 10vw;
     height: 100%;
 }
 
-.record-title {
+.record-title,
+.book-add-title {
     height: 20%;
     display: grid;
     grid-template-columns: 1fr 4fr;

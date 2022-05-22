@@ -6,6 +6,7 @@ import AppNavbar from './AppNavbar';
 import CheckOutRecord from './pages/CheckOutRecord/CheckOutRecord';
 import BookManagement from './pages/BookManagement/BookManagement';
 import TrackingCheckOutRecord from './pages/CheckOutRecord/TrackingCheckOutRecord';
+import BookAdder from './pages/BookManagement/BookAdder';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { NavigationContainer } from '@react-navigation/native';
 import {getAllBookInformationApi} from './api/bookerflyApi.js'
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/checkOutRecord" element={<CheckOutRecord/>} />
           <Route path="/bookManagement" element={<BookManagement/>} />
           <Route path="/trackingCheckOutRecord" element={<TrackingCheckOutRecord/>} />
+          <Route path="/bookAdder" element={<BookAdder/>} />
         </Routes>
       </BrowserRouter>
     </NavigationContainer>

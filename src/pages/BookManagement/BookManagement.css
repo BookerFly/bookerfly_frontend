@@ -33,3 +33,27 @@
 .text-item {
     margin-right: 6vh;
 }
+
+.book-add-content {
+    margin-top: 25px;
+}
+
+.book-add-row {
+    align-items: end;
+}
+
+.book-add-button {
+    margin-right: 3%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

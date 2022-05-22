@@ -46,3 +46,8 @@ export const borrowBookApi = (bookTitle, bookId, callback, error_callback) => {
     let requestPath = bookerflyHost + "collection/books/" + bookId + "/borrow?userId=userId&bookTitle=" + bookTitle;
     post(requestPath, {}, callback, error_callback);
 }
+
+export const createBookApi = (bookContent, callback, error_callback) => {
+    let requestPath = bookerflyHost + "collection/books/create";
+    post(requestPath, bookContent, callback, error_callback);
+}
