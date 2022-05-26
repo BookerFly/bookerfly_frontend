@@ -133,8 +133,8 @@ const BookAdder = () => {
                             </Col>
                         </Form.Group>
                     </Form>
-                    <BookerFlyButton className="book-add-button" content="新增" onClick={() => handleSumbit(bookContent, handleShow)} />
-                    <BookerFlyButton className="book-add-button" content="取消" onClick={() => navigate(-1)} />
+                    <BookerFlyButton className="book-add-button" backgroundColor="#89ABE3" color="white" content="新增" onClick={() => handleSumbit(bookContent, handleShow)} />
+                    <BookerFlyButton className="book-add-button" backgroundColor="#a8b0ae" color="white" content="取消" onClick={() => navigate(-1)} />
                 </div>
             </div>
             <ToastContainer autoClose={2000} />

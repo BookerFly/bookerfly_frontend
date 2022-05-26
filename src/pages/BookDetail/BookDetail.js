@@ -1,5 +1,5 @@
 import { Modal } from 'react-bootstrap';
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -28,7 +28,7 @@ const update = (bookInfoId, setStatus, bookId) => {
 	})
 }
 
-const BookDetailTable = ({ books, setFlag, bookTitle, bookInfoId }) => {
+const BookDetailTable = ({ books, bookTitle, bookInfoId }) => {
 	return (
 		<table class="styled-table">
 			<thead>
@@ -51,7 +51,6 @@ const BookDetailTable = ({ books, setFlag, bookTitle, bookInfoId }) => {
 							bookStatus={bookStatus}
 							bookshelfNumber={bookshelfNumber}
 							bookshelfPosition={bookshelfPosition}
-							setFlag={setFlag}
 						/>
 					)
 				})}
@@ -60,15 +59,11 @@ const BookDetailTable = ({ books, setFlag, bookTitle, bookInfoId }) => {
 	)
 }
 
-const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, bookshelfNumber, bookshelfPosition, setFlag }) => {
+const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, bookshelfNumber, bookshelfPosition }) => {
 	const [status, setStatus] = useState(bookStatus);
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
-
-	useEffect(() => {
-		setFlag(true)
-	}, [status])
 
 	return (
 		<tr>
@@ -111,7 +106,7 @@ const BookInformation = ({ bookInformation }) => {
 	)
 }
 
-const BookDetail = ({ setFlag }) => {
+const BookDetail = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const { bookInformation, books, image } = location.state;
@@ -123,7 +118,7 @@ const BookDetail = ({ setFlag }) => {
 					<img className="book-image" src={image} />
 					<BookInformation bookInformation={bookInformation} />
 				</div>
-				<BookDetailTable books={books} setFlag={setFlag} bookTitle={bookInformation.title} bookInfoId={bookInformation.bookInfoId} />
+				<BookDetailTable books={books} bookTitle={bookInformation.title} bookInfoId={bookInformation.bookInfoId} />
 			</div>
 			<ToastContainer autoClose={2000} />
 		</React.Fragment>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './App.css';
 import BookList from './pages/BookList/BookList';
 import BookDetail from './pages/BookDetail/BookDetail';
+import EditableBookDetail from './pages/BookDetail/EditableBookDetail';
 import AppNavbar from './AppNavbar';
 import CheckOutRecord from './pages/CheckOutRecord/CheckOutRecord';
 import BookManagement from './pages/BookManagement/BookManagement';
@@ -18,7 +19,6 @@ const fetchBookInfos = (setBookInfos) => {
 }
 
 const App = () => {
-  const [flag, setFlag] = useState(false);
   const [bookInfos, setBookInfos] = useState([]);
   const [searchCondition, setSearchCondition] = useState({ option: "ANY_MATCH", keyword: "", isSearched: false})
 
@@ -26,7 +26,6 @@ const App = () => {
     fetchBookInfos(setBookInfos)
   }, [])
 
-  let setFlagFunction = (f) => setFlag(f)
 
   return (
     <NavigationContainer>
@@ -34,7 +33,8 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<BookList bookInfos={bookInfos} setBookInfos={setBookInfos} searchCondition={searchCondition} setSearchCondition={setSearchCondition}/>} />
-          <Route path="/bookDetail" element={<BookDetail setFlag={setFlagFunction}/>} />
+          <Route path="/bookDetail" element={<BookDetail/>} />
+          <Route path="/manager/bookDetail" element={<EditableBookDetail/>} />
           <Route path="/checkOutRecord" element={<CheckOutRecord/>} />
           <Route path="/bookManagement" element={<BookManagement/>} />
           <Route path="/trackingCheckOutRecord" element={<TrackingCheckOutRecord/>} />

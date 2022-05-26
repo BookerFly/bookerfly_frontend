@@ -51,3 +51,8 @@ export const createBookApi = (bookContent, callback, error_callback) => {
     let requestPath = bookerflyHost + "collection/books/create";
     post(requestPath, bookContent, callback, error_callback);
 }
+
+export const editBookApi = (bookId, bookContent, callback, error_callback) => {
+    let requestPath = bookerflyHost + "collection/books/" + bookId + "/edit";
+    put(requestPath, bookContent, callback, error_callback);
+}

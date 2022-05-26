@@ -45,17 +45,33 @@
     text-align: left;
 }
 
-.styled-table th,
 .styled-table td {
     padding: 12px 15px;
 }
 
+.styled-table th[colspan="4"] svg {
+    position: relative;
+    right: 50%;
+    left: 50%;
+}
+
+.styled-table th {
+    padding: 12px 15px;
+    width: 60px;
+}
+
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
+    height: 65px;
 }
 
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #F2DDDE;
+}
+
+.book-index-th {
+    width: 35px !important;
+    padding: 12px 10px !important;
 }
 
 .navbar-parent {
@@ -71,6 +87,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.book-status-th svg {
+    margin-left: 20px;
 }
 
 .book-information-container-btn {
