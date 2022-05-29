@@ -10,6 +10,7 @@ import SearchResultList from './SearchResultList.js'
 import './BookList.css'
 import { searchBookApi } from '../../api/bookerflyApi';
 import BookerFlyButton from '../../common/BookerFlyButton';
+import { useNavigate } from 'react-router';
 
 const searchBook = (setBookInfos, searchCondition, setSearchCondition) => {
   if (searchCondition.keyword === "") {
@@ -24,6 +25,13 @@ const searchBook = (setBookInfos, searchCondition, setSearchCondition) => {
 }
 
 const BookList = ({ bookInfos, setBookInfos, searchCondition, setSearchCondition }) => {
+  const navigate = useNavigate();
+  
+  if(!sessionStorage.getItem("authenticated")){
+		navigate('/login')
+		return(<div></div>)
+	} 
+
   return (
     <React.Fragment>
       <div className="search-bar">

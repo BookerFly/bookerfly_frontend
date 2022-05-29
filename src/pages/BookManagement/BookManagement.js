@@ -15,6 +15,10 @@ const goToBookAdderPage = (navigate) => {
 
 const BookManagement = () => {
     const navigate = useNavigate()
+    if(!sessionStorage.getItem("authenticated")){
+		navigate('/login');
+		return(<div></div>);
+	} 
 	return (
         <React.Fragment>
             <div className="management-container">

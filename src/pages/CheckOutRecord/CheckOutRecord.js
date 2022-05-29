@@ -4,6 +4,7 @@ import { getCheckoutRecordByUserIdApi, returnBookApi } from '../../api/bookerfly
 import { ToastContainer, toast } from 'react-toastify';
 import './CheckOutRecord.css'
 import BookerFlyButton from '../../common/BookerFlyButton';
+import { useNavigate } from 'react-router-dom';
 
 const fetchCheckOutRecord = (setCheckOutRecords) => {
 	getCheckoutRecordByUserIdApi("userId", response => {
@@ -98,10 +99,16 @@ const CheckOutRecordItem = ({ index, title, bookId, userId, checkOutTime, bookSt
 }
 
 const CheckOutRecord = () => {
+	const navigate = useNavigate();
 	const [checkOutRecords, setCheckOutRecords] = useState([])
 	useEffect(() => {
-		fetchCheckOutRecord(setCheckOutRecords)
+		fetchCheckOutRecord(setCheckOutRecords);
 	}, [])
+
+	if(!sessionStorage.getItem("authenticated")){
+		navigate('/login');
+		return(<div></div>);
+	} 
 
 	return (
 		<React.Fragment>
