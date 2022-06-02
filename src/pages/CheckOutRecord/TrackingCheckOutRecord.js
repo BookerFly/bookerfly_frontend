@@ -71,7 +71,7 @@ const CheckOutRecordItem = ({ index, title, bookId, userId, bookStatus, checkOut
 			<th>{index}</th>
 			<th>{title}</th>
             <th>{userId}</th>
-			<th className="book-status-th">
+			<th className="book-status-th record">
                 <Form.Select value={bookStatus} onChange={(e) => handleEditBook(bookId, userId, e.target.value, setCheckOutRecords) }> 
                     <option value="AVAILABLE">已歸還</option>
                     <option value="PROCESSING">處理中</option>

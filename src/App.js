@@ -43,7 +43,7 @@ const App = () => {
           <Route exact path="/login" element={<Login setIsAuthed={setIsAuthed}/>} />
 
           <Route path="/" element={<BookList bookInfos={bookInfos} setBookInfos={setBookInfos} searchCondition={searchCondition} setSearchCondition={setSearchCondition}/>} />
-          <Route path="/bookDetail" element={<BookDetail/>} />
+          <Route path="/user/bookDetail" element={<BookDetail/>} />
           <Route path="/manager/bookDetail" element={<EditableBookDetail/>} />
           <Route path="/checkOutRecord" element={<CheckOutRecord/>} />
           <Route path="/bookManagement" element={<BookManagement/>} />

@@ -8,8 +8,7 @@ import { selectBookApi } from '../../api/bookerflyApi';
 
 const selectBook = (bookInformation, navigate) => {
   selectBookApi(bookInformation.bookInfoId, response => {
-    // navigate base on user role
-    navigate('/manager/bookDetail', { state: { bookInformation, books: response.data, image: angryCat } });
+    navigate('/' + sessionStorage.getItem("role") +'/bookDetail', { state: { bookInformation, image: angryCat } });
   }, error => console.error(error))
 }
 

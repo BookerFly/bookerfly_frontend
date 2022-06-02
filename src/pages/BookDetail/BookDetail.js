@@ -1,13 +1,19 @@
-import { Modal } from 'react-bootstrap';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './BookDetail.css'
-import { borrowBookApi, selectBookApi } from '../../api/bookerflyApi';
+import './BookDetail.css';
+import { borrowBookApi, selectBookApi, reserveBookApi } from '../../api/bookerflyApi';
 import BookerFlyButton from '../../common/BookerFlyButton';
-import { IoArrowBackCircleOutline } from 'react-icons/io5'
+import { IoArrowBackCircleOutline } from 'react-icons/io5';
+import { Modal } from 'react-bootstrap';
+
+const fetchBooks = (bookInfoId, setBooks) => {
+	selectBookApi(bookInfoId, response => {
+		setBooks(response.data);
+	}, error => console.error(error))
+}
 
 const borrowBook = (bookTitle, bookId, bookInfoId, setStatus) => {
 	borrowBookApi(bookTitle, bookId, response => {
@@ -16,6 +22,15 @@ const borrowBook = (bookTitle, bookId, bookInfoId, setStatus) => {
 	}, error => {
 		toast.error(error.response.data, { hideProgressBar: true });
 		console.error("borrowBook", error);
+	})
+}
+
+const reserveBook = (bookId) => {
+	reserveBookApi(bookId, sessionStorage.getItem("userId"), response => {
+		toast("Reserve Success !", { hideProgressBar: true });
+	}, error => {
+		toast.error(error.response.data, { hideProgressBar: true });
+		console.error("reserveBook", error);
 	})
 }
 
@@ -61,9 +76,14 @@ const BookDetailTable = ({ books, bookTitle, bookInfoId }) => {
 
 const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, bookshelfNumber, bookshelfPosition }) => {
 	const [status, setStatus] = useState(bookStatus);
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const [borrowShow, setBorrowShow] = useState(false);
+	const [reserveShow, setReserveShow] = useState(false);
+	const handleBorrowClose = () => setBorrowShow(false);
+	const handleBorrowShow = () => setBorrowShow(true);
+	const handleReserveClose = () => setReserveShow(false);
+	const handleReserveShow = () => setReserveShow(true);
+	const canBorrow = (status) => status === "AVAILABLE"
+	const canReserve = (status) => status === "CHECKED_OUT" || status === "PROCESSING" || status === "RESERVED"
 
 	return (
 		<tr>
@@ -73,18 +93,34 @@ const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, booksh
 			<th>
 				<div className="book-status-th">
 					{status}
-					<BookerFlyButton content="借書" onClick={() => handleShow()} backgroundColor="#89ABE3" color="white"/>
-					<Modal show={show} onHide={handleClose} animation={false}>
+					{canBorrow(status) && <BookerFlyButton content="借書" onClick={() => handleBorrowShow()} backgroundColor="#89ABE3" color="white"/> }
+					{canReserve(status)&& <BookerFlyButton content="預約" onClick={() => handleReserveShow()} backgroundColor="#f4b794" color="white"/> }
+					<Modal show={borrowShow} onHide={handleBorrowClose} animation={false}>
 						<Modal.Header closeButton>
 							<Modal.Title>借書</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>你要借書嗎?</Modal.Body>
 						<Modal.Footer>
-							<BookerFlyButton content="No" backgroundColor="#a8b0ae" onClick={handleClose} color="white"/>
+							<BookerFlyButton content="No" backgroundColor="#a8b0ae" onClick={handleBorrowClose} color="white"/>
 							<BookerFlyButton content="Yes" backgroundColor="#89ABE3" color="white"
 							onClick={() => {
 								borrowBook(bookTitle, bookId, bookInfoId, setStatus)
-								handleClose()
+								handleBorrowClose()
+							}}/> 
+						</Modal.Footer>
+					</Modal>
+
+					<Modal show={reserveShow} onHide={handleReserveClose} animation={false}>
+						<Modal.Header closeButton>
+							<Modal.Title>預約</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>你要預約嗎?</Modal.Body>
+						<Modal.Footer>
+							<BookerFlyButton content="No" backgroundColor="#a8b0ae" onClick={handleReserveClose} color="white"/>
+							<BookerFlyButton content="Yes" backgroundColor="#f4b794" color="white"
+							onClick={() => {
+								reserveBook(bookId)
+								handleReserveClose()
 							}}/> 
 						</Modal.Footer>
 					</Modal>
@@ -109,7 +145,12 @@ const BookInformation = ({ bookInformation }) => {
 const BookDetail = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { bookInformation, books, image } = location.state;
+	const { bookInformation, image } = location.state;
+	const [books, setBooks] = useState([]);
+	useEffect(() => {
+		fetchBooks(bookInformation.bookInfoId, setBooks);
+	}, [])
+
 	return (
 		<React.Fragment>
 			<IoArrowBackCircleOutline className="previous-page-btn" size="60" onClick={() => navigate(-1)}/>

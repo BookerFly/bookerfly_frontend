@@ -88,7 +88,7 @@ const CheckOutRecordItem = ({ index, title, bookId, userId, checkOutTime, bookSt
 			<th>{index}</th>
 			<th>{title}</th>
 			<th>{checkOutTime}</th>
-			<th className="book-status-th">{bookStatus}
+			<th className="book-status-th record">{bookStatus}
 				{
 					bookStatus === "借閱中" && 
 					<BookerFlyButton content="還書" backgroundColor="#89abe3" color="white" onClick={() => returnBook(bookId, userId, index - 1, checkOutRecords, setCheckOutRecords)}/>

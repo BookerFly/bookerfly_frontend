@@ -42,6 +42,11 @@ export const confirmReturnBookApi = (bookId, userId, callback, error_callback) =
     put(requestPath, {}, callback, error_callback);
 }
 
+export const reserveBookApi = (bookId, userId, callback, error_callback) => {
+    let requestPath = bookerflyHost + "collection/books/" + bookId + "/reserve?userId=" + userId;
+    post(requestPath, {}, callback, error_callback);
+}
+
 export const borrowBookApi = (bookTitle, bookId, callback, error_callback) => {
     let requestPath = bookerflyHost + "collection/books/" + bookId + "/borrow?userId=userId&bookTitle=" + bookTitle;
     post(requestPath, {}, callback, error_callback);
