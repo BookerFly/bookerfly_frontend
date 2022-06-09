@@ -8,6 +8,7 @@ import { borrowBookApi, selectBookApi, reserveBookApi } from '../../api/bookerfl
 import BookerFlyButton from '../../common/BookerFlyButton';
 import { IoArrowBackCircleOutline } from 'react-icons/io5';
 import { Modal } from 'react-bootstrap';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
 const fetchBooks = (bookInfoId, setBooks) => {
 	selectBookApi(bookInfoId, response => {
@@ -41,6 +42,14 @@ const update = (bookInfoId, setStatus, bookId) => {
 	}, error => {
 		console.error(error);
 	})
+}
+
+const addFavoriteBook = (setIsFavoriteBook) => {
+	setIsFavoriteBook(true);
+}
+
+const removeFavoriteBook = (setIsFavoriteBook) => {
+	setIsFavoriteBook(false);
 }
 
 const BookDetailTable = ({ books, bookTitle, bookInfoId }) => {
@@ -93,20 +102,20 @@ const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, booksh
 			<th>
 				<div className="book-status-th">
 					{status}
-					{canBorrow(status) && <BookerFlyButton content="借書" onClick={() => handleBorrowShow()} backgroundColor="#89ABE3" color="white"/> }
-					{canReserve(status)&& <BookerFlyButton content="預約" onClick={() => handleReserveShow()} backgroundColor="#f4b794" color="white"/> }
+					{canBorrow(status) && <BookerFlyButton content="借書" onClick={() => handleBorrowShow()} backgroundColor="#89ABE3" color="white" />}
+					{canReserve(status) && <BookerFlyButton content="預約" onClick={() => handleReserveShow()} backgroundColor="#f4b794" color="white" />}
 					<Modal show={borrowShow} onHide={handleBorrowClose} animation={false}>
 						<Modal.Header closeButton>
 							<Modal.Title>借書</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>你要借書嗎?</Modal.Body>
 						<Modal.Footer>
-							<BookerFlyButton content="No" backgroundColor="#a8b0ae" onClick={handleBorrowClose} color="white"/>
+							<BookerFlyButton content="No" backgroundColor="#a8b0ae" onClick={handleBorrowClose} color="white" />
 							<BookerFlyButton content="Yes" backgroundColor="#89ABE3" color="white"
-							onClick={() => {
-								borrowBook(bookTitle, bookId, bookInfoId, setStatus)
-								handleBorrowClose()
-							}}/> 
+								onClick={() => {
+									borrowBook(bookTitle, bookId, bookInfoId, setStatus)
+									handleBorrowClose()
+								}} />
 						</Modal.Footer>
 					</Modal>
 
@@ -116,12 +125,12 @@ const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, booksh
 						</Modal.Header>
 						<Modal.Body>你要預約嗎?</Modal.Body>
 						<Modal.Footer>
-							<BookerFlyButton content="No" backgroundColor="#a8b0ae" onClick={handleReserveClose} color="white"/>
+							<BookerFlyButton content="No" backgroundColor="#a8b0ae" onClick={handleReserveClose} color="white" />
 							<BookerFlyButton content="Yes" backgroundColor="#f4b794" color="white"
-							onClick={() => {
-								reserveBook(bookId)
-								handleReserveClose()
-							}}/> 
+								onClick={() => {
+									reserveBook(bookId)
+									handleReserveClose()
+								}} />
 						</Modal.Footer>
 					</Modal>
 				</div>
@@ -130,14 +139,25 @@ const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, booksh
 	)
 }
 
-const BookInformation = ({ bookInformation }) => {
-	const { title, author, isbn, type, image, bookInfoId } = bookInformation
+const BookInformation = ({ bookInformation, image }) => {
+	// const { title, author, isbn, type, image, bookInfoId } = bookInformation
+	const { title, author, isbn, type, bookInfoId } = bookInformation
+	const [ isFavoriteBook, setIsFavoriteBook ] = useState(false);
 	return (
-		<div className="book-information-detail">
-			<h3>{title}</h3>
-			<div>作者: {author}</div>
-			<div>類別: {type}</div>
-			<div>ISBN: {isbn}</div>
+		<div className="book-information-container book-detail">
+			<img className="book-image" src={image} />
+			<div className="book-information-detail">
+				<h3>{title}</h3>
+				<div>作者: {author}</div>
+				<div>類別: {type}</div>
+				<div>ISBN: {isbn}</div>
+			</div>
+			{
+				isFavoriteBook ?
+				<AiFillHeart className="favorite-book-btn" size="60" onClick={() => removeFavoriteBook(setIsFavoriteBook)}/>
+				:
+				<AiOutlineHeart className="favorite-book-btn" size="60" onClick={() => addFavoriteBook(setIsFavoriteBook)}/>
+			}
 		</div>
 	)
 }
@@ -153,12 +173,9 @@ const BookDetail = () => {
 
 	return (
 		<React.Fragment>
-			<IoArrowBackCircleOutline className="previous-page-btn" size="60" onClick={() => navigate(-1)}/>
+			<IoArrowBackCircleOutline className="previous-page-btn" size="60" onClick={() => navigate(-1)} />
 			<div className="book-container">
-				<div className="book-information-container">
-					<img className="book-image" src={image} />
-					<BookInformation bookInformation={bookInformation} />
-				</div>
+				<BookInformation bookInformation={bookInformation} image={image} />
 				<BookDetailTable books={books} bookTitle={bookInformation.title} bookInfoId={bookInformation.bookInfoId} />
 			</div>
 			<ToastContainer autoClose={2000} />

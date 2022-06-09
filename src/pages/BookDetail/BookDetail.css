@@ -13,3 +13,11 @@
 .previous-page-btn:active {
     transform: translateY(0);
 }
+
+.book-information-container.book-detail {
+    grid-template-columns: 0.8fr 1fr 1fr;
+}
+
+.favorite-book-btn {
+    margin-top: 14%;
+}
