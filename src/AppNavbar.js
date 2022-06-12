@@ -13,6 +13,9 @@ const AppNavbar = ({isAuthed}) => {
                 <Nav className="me-auto" hidden={!isAuthed || isManager()}>
                     <Nav.Link href="/checkOutRecord">借閱紀錄</Nav.Link>
                 </Nav>
+                <Nav className="me-auto" hidden={!isAuthed || isManager()}>
+                    <Nav.Link href="/favoriteList">收藏書清單</Nav.Link>
+                </Nav>
                 <Nav className="me-auto" hidden={!isAuthed || isBorrower()}>
                     <Nav.Link href="/bookManagement">管理書籍</Nav.Link>
                 </Nav> 

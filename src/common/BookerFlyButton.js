@@ -3,7 +3,7 @@ import './styles.css'
 
 const BookerFlyButton = ({content="button", onClick, backgroundColor, color, className}) => {
     return (
-        <button className={"bookerfly-btn " + className}  onClick={onClick}
+        <button className={"bookerfly-btn " + className} onClick={onClick}
                 style={{backgroundColor: backgroundColor,
                         color: color}} >
             {content}

@@ -12,6 +12,7 @@ import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { NavigationContainer } from '@react-navigation/native';
 import {getAllBookInformationApi} from './api/bookerflyApi.js'
 import Login from './pages/Login/Login';
+import FavoriteList from './pages/FavoriteList/FavoriteList';
 
 const fetchBookInfos = (setBookInfos) => {
   getAllBookInformationApi(response => {
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/user/bookDetail" element={<BookDetail/>} />
           <Route path="/manager/bookDetail" element={<EditableBookDetail/>} />
           <Route path="/checkOutRecord" element={<CheckOutRecord/>} />
+          <Route path="/favoriteList" element={<FavoriteList/>} />
           <Route path="/bookManagement" element={<BookManagement/>} />
           <Route path="/trackingCheckOutRecord" element={<TrackingCheckOutRecord/>} />
           <Route path="/bookAdder" element={<BookAdder/>} />

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './BookDetail.css';
-import { borrowBookApi, selectBookApi, reserveBookApi, addFavoriteBookApi, removeFavoriteBookApi } from '../../api/bookerflyApi';
+import { borrowBookApi, selectBookApi, reserveBookApi, addFavoriteBookApi, removeFavoriteBookApi, getBorrowerApi } from '../../api/bookerflyApi';
 import BookerFlyButton from '../../common/BookerFlyButton';
 import { IoArrowBackCircleOutline } from 'react-icons/io5';
 import { Modal } from 'react-bootstrap';
@@ -151,10 +151,9 @@ const BookItem = ({ bookIndex, bookTitle, bookId, bookInfoId, bookStatus, booksh
 	)
 }
 
-const BookInformation = ({ bookInformation, image }) => {
+const BookInformation = ({ bookInformation, image, isFavoriteBook, setIsFavoriteBook }) => {
 	// const { title, author, isbn, type, image, bookInfoId } = bookInformation
 	const { title, author, isbn, type, bookInfoId } = bookInformation
-	const [ isFavoriteBook, setIsFavoriteBook ] = useState(false);
 	let userId = sessionStorage.getItem("userId")
 	return (
 		<div className="book-information-container book-detail">
@@ -180,15 +179,22 @@ const BookDetail = () => {
 	const navigate = useNavigate();
 	const { bookInformation, image } = location.state;
 	const [books, setBooks] = useState([]);
+	const [isFavoriteBook, setIsFavoriteBook] = useState(false);
+	let userId = sessionStorage.getItem("userId")
+
 	useEffect(() => {
 		fetchBooks(bookInformation.bookInfoId, setBooks);
+		
+		getBorrowerApi(userId, response => {
+			setIsFavoriteBook(response.data.favoriteList.bookInfoList.some(x => x.bookInfoId === bookInformation.bookInfoId)) 
+		}, error => {})
 	}, [])
 
 	return (
 		<React.Fragment>
 			<IoArrowBackCircleOutline className="previous-page-btn" size="60" onClick={() => navigate(-1)} />
 			<div className="book-container">
-				<BookInformation bookInformation={bookInformation} image={image} />
+				<BookInformation bookInformation={bookInformation} image={image} isFavoriteBook={isFavoriteBook} setIsFavoriteBook={setIsFavoriteBook}/>
 				<BookDetailTable books={books} bookTitle={bookInformation.title} bookInfoId={bookInformation.bookInfoId} />
 			</div>
 			<ToastContainer autoClose={2000} />

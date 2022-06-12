@@ -27,6 +27,11 @@ export const getTrackingCheckoutRecordApi = (callback, error_callback) => {
     get(requestPath, callback, error_callback);
 }
 
+export const getBorrowerApi = (userId, callback, error_callback) => {
+    let requestPath = bookerflyHost + "organization/borrowers?userId=" + userId;
+    get(requestPath, callback, error_callback);
+}
+
 export const editBookStatusApi = (bookId, userId, bookStatus, callback, error_callback) => {
     let requestPath = bookerflyHost + "collection/books/" + bookId + "/edit/book-status";
     put(requestPath, {"userId":userId, "bookStatus":bookStatus}, callback, error_callback);

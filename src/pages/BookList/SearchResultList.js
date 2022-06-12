@@ -6,8 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { selectBookApi } from '../../api/bookerflyApi';
 
 const selectBook = (bookInformation, navigate) => {
+	let role = sessionStorage.getItem("role");
 	selectBookApi(bookInformation.bookInfoId, response => {
-		navigate('/bookDetail', { state: { bookInformation, books: response.data, image: angryCat } });
+		navigate('/'+ role +'/bookDetail', { state: { bookInformation, books: response.data, image: angryCat } });
 	}, error => console.error(error))
 }
 
