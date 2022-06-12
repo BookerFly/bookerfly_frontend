@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './BookDetail.css';
-import { borrowBookApi, selectBookApi, reserveBookApi } from '../../api/bookerflyApi';
+import { borrowBookApi, selectBookApi, reserveBookApi, addFavoriteBookApi, removeFavoriteBookApi } from '../../api/bookerflyApi';
 import BookerFlyButton from '../../common/BookerFlyButton';
 import { IoArrowBackCircleOutline } from 'react-icons/io5';
 import { Modal } from 'react-bootstrap';
@@ -44,12 +44,24 @@ const update = (bookInfoId, setStatus, bookId) => {
 	})
 }
 
-const addFavoriteBook = (setIsFavoriteBook) => {
-	setIsFavoriteBook(true);
+const addFavoriteBook = (userId, bookInfoId, setIsFavoriteBook) => {
+	addFavoriteBookApi(userId, bookInfoId, response => {
+		toast("Add Favorite Book Success !", { hideProgressBar: true });
+		setIsFavoriteBook(true);
+	}, error => {
+		toast.error(error.response.data, { hideProgressBar: true });
+		console.error("addFavorite", error);
+	})
 }
 
-const removeFavoriteBook = (setIsFavoriteBook) => {
-	setIsFavoriteBook(false);
+const removeFavoriteBook = (userId, bookInfoId, setIsFavoriteBook) => {
+	removeFavoriteBookApi(userId, bookInfoId, response => {
+		toast("Remove Favorite Book Success !", { hideProgressBar: true });
+		setIsFavoriteBook(false);
+	}, error => {
+		toast.error(error.response.data, { hideProgressBar: true });
+		console.error("removeFavorite", error);
+	})
 }
 
 const BookDetailTable = ({ books, bookTitle, bookInfoId }) => {
@@ -143,6 +155,7 @@ const BookInformation = ({ bookInformation, image }) => {
 	// const { title, author, isbn, type, image, bookInfoId } = bookInformation
 	const { title, author, isbn, type, bookInfoId } = bookInformation
 	const [ isFavoriteBook, setIsFavoriteBook ] = useState(false);
+	let userId = sessionStorage.getItem("userId")
 	return (
 		<div className="book-information-container book-detail">
 			<img className="book-image" src={image} />
@@ -154,9 +167,9 @@ const BookInformation = ({ bookInformation, image }) => {
 			</div>
 			{
 				isFavoriteBook ?
-				<AiFillHeart className="favorite-book-btn" size="60" onClick={() => removeFavoriteBook(setIsFavoriteBook)}/>
+				<AiFillHeart className="favorite-book-btn" size="60" onClick={() => removeFavoriteBook(userId, bookInfoId, setIsFavoriteBook)}/>
 				:
-				<AiOutlineHeart className="favorite-book-btn" size="60" onClick={() => addFavoriteBook(setIsFavoriteBook)}/>
+				<AiOutlineHeart className="favorite-book-btn" size="60" onClick={() => addFavoriteBook(userId, bookInfoId, setIsFavoriteBook)}/>
 			}
 		</div>
 	)

@@ -61,3 +61,13 @@ export const editBookApi = (bookId, bookContent, callback, error_callback) => {
     let requestPath = bookerflyHost + "collection/books/" + bookId + "/edit";
     put(requestPath, bookContent, callback, error_callback);
 }
+
+export const addFavoriteBookApi = (userId, bookInfoId, callback, error_callback) => {
+    let requestPath = bookerflyHost + "organization/borrowers/" + userId + "/favorite-book/add?bookInfoId=" + bookInfoId;
+    post(requestPath, {}, callback, error_callback);
+}
+
+export const removeFavoriteBookApi = (userId, bookInfoId, callback, error_callback) => {
+    let requestPath = bookerflyHost + "organization/borrowers/" + userId + "/favorite-book/remove?bookInfoId=" + bookInfoId;
+    post(requestPath, {}, callback, error_callback);
+}
