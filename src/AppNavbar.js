@@ -10,7 +10,7 @@ const AppNavbar = ({isAuthed}) => {
             <Container className="navbar-container">
             <React.Fragment>
                 <Navbar.Brand href="/">Bookerfly</Navbar.Brand>
-                <Nav className="me-auto" hidden={!isAuthed || isManager()}>
+                <Nav hidden={!isAuthed || isManager()} >
                     <Nav.Link href="/checkOutRecord">借閱紀錄</Nav.Link>
                 </Nav>
                 <Nav className="me-auto" hidden={!isAuthed || isManager()}>
